@@ -162,6 +162,17 @@ declare namespace Nedb {
     exec(callback: (err: Error | null, count: number) => void): void;
   }
 
+  interface Storage {
+    async crashSafeWriteFileLinesAsync(filename: string, lines: string[], modes?: { fileMode: number, dirMode: number }): Promise<void>;
+    async appendFileAsync: typeof import("node:fs/promises").appendFile
+    async ensureDatafileIntegrityAsync(filename: string, mode?: number): Promise<void>;
+    readFileStream?: typeof import("node:fs").createReadStream;
+    async readFileAsync: typeof import("node:fs/promises").readFile;
+    async existsAsync(file: string): Promise<boolean>;
+    async unlinkAsync: typeof import("node:fs/promises").unlink;
+    async ensureParentDirectoryExistsAsync(filename: string, mode: number): Promise<void>;
+  }
+
   interface DataStoreOptions {
     filename?: string;
     timestampData?: boolean;
@@ -174,6 +185,7 @@ declare namespace Nedb {
     compareStrings?(a: string, b: string): number;
     modes?: { fileMode: number; dirMode: number };
     testSerializationHooks?: boolean;
+    storage?: Storage;
   }
 
   interface UpdateOptions {
