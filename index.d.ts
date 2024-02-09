@@ -163,14 +163,14 @@ declare namespace Nedb {
   }
 
   interface Storage {
-    crashSafeWriteFileLinesAsync(filename: string, lines: string[], modes?: { fileMode: number, dirMode: number }): Promise<void>;
-    appendFileAsync: typeof import("node:fs/promises").appendFile
-    ensureDatafileIntegrityAsync(filename: string, mode?: number): Promise<void>;
-    readFileStream?: typeof import("node:fs").createReadStream;
-    readFileAsync: typeof import("node:fs/promises").readFile;
-    existsAsync(file: string): Promise<boolean>;
-    unlinkAsync: typeof import("node:fs/promises").unlink;
-    ensureParentDirectoryExistsAsync(filename: string, mode: number): Promise<void>;
+    crashSafeWriteFileLinesAsync(path: string, lines: string[], modes: { fileMode: number, dirMode: number }): Promise<void>;
+    appendFileAsync(path: string, data: string, mode: number): Promise<void>;
+    ensureDatafileIntegrityAsync(path: string, mode: number): Promise<void>;
+    readFileStream?(path: string, mode: number): NodeJS.ReadableStream;
+    readFileAsync(path: string, mode: number): Promise<string>;
+    existsAsync(path: string): Promise<boolean>;
+    unlinkAsync(path: string): Promise<void>;
+    ensureParentDirectoryExistsAsync(dir: string, mode: number): Promise<void>;
   }
 
   interface DataStoreOptions {
